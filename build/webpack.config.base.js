@@ -1,32 +1,81 @@
-'use strict'
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader')
-const path = require('path')
+const path = require("path");
+const { VueLoaderPlugin } = require("vue-loader");
 
 module.exports = {
-  entry: path.resolve(__dirname, '../src/index.js'),
+  entry: {
+    main: path.resolve(__dirname, "../src/index.js")
+  },
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: "index.js"
+    path: path.resolve(__dirname, "../dist"),
+    filename: "[name].bundle.js"
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        loader: "babel-loader",
-        exclude: /node_modules/
+        test: /\.js|jsx$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"]
+          }
+        }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader"
+        ]
+      },
+      {
+        test: /\.(jpg|png|jpeg|gif|bmp)$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 1024,
+            fallback: {
+              loader: "file-loader",
+              options: {
+                name: "[name].[ext]"
+              }
+            }
+          }
+        }
+      },
+      {
+        test: /\.(mp4|ogg|mp3|wav)$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 1024,
+            fallback: {
+              loader: "file-loader",
+              options: {
+                name: "[name].[ext]"
+              }
+            }
+          }
+        }
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        use: {
+          loader: "vue-loader"
+        }
       }
     ]
   },
+  resolve: {
+    alias: {
+      "@": path.join(__dirname, "../src")
+    },
+    extensions: [
+      ".js", ".json",".vue"
+    ]
+  },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './index.html',
-      filename: 'index.html',
-    }),
-    new VueLoaderPlugin(),
+    new VueLoaderPlugin()
   ]
 }
