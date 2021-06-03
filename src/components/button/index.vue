@@ -1,13 +1,22 @@
 <template>
-  <button type="button" :class="classes" @click="onClick">{{ label }}</button>
+  <button type="button" :class="classes" @click="onClick">
+    <slot></slot>
+  </button>
 </template>
 
-<script>
+<script lang="ts">
 import './style/button.css'
-import { reactive, computed } from 'vue'
+import { reactive, computed, defineComponent } from 'vue'
 import { getPreFixName } from '../_util'
 
-export default {
+interface ButtonProps {
+  type: string,
+  plain?: boolean,
+  size?: string,
+  disabled?: boolean
+}
+
+export default defineComponent({
   name: 'my-button',
 
   props: {
@@ -21,7 +30,7 @@ export default {
     },
     size: {
       type: String,
-      validator: function (value) {
+      validator: function (value: string): boolean {
         return ['small', 'medium', 'large'].indexOf(value) !== -1;
       },
     },
@@ -33,14 +42,13 @@ export default {
 
   emits: ['click'],
 
-  setup(props, { emit }) {
+  setup(props: ButtonProps, { emit }) {
     props = reactive(props)
     let prefix = getPreFixName('button')
     return {
       classes: computed(() => ([
         `${prefix}`,
-        props.primary ? `${prefix}--primary` : null,
-        !props.primary ? `${prefix}--secondary` : null,
+        `${prefix}--${props.type}`,
         `${prefix}--${props.size || 'medium'}`
       ])),
       onClick() {
@@ -48,5 +56,5 @@ export default {
       }
     }
   }
-}
+})
 </script>

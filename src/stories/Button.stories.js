@@ -18,12 +18,12 @@ const Template = (args) => ({
     return { args };
   },
   // And then the `args` are bound to your component with `v-bind="args"`
-  template: '<my-button v-bind="args" />',
+  template: '<my-button v-bind="args">按钮</my-button>',
 });
 
 export const Primary = Template.bind({});
 Primary.args = {
-  primary: true,
+  type: 'primary',
   label: 'Button',
 };
 
