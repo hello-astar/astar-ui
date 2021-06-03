@@ -1,19 +1,51 @@
-<!--
- * @Author: astar
- * @Date: 2021-05-13 13:44:41
- * @LastEditors: astar
- * @LastEditTime: 2021-05-13 17:04:37
- * @Description: 文件描述
- * @FilePath: \astar-ui\src\components\button\index.vue
--->
 <template>
-  <button>{{name}}</button>
+  <button type="button" :class="classes" @click="onClick">{{ label }}</button>
 </template>
+
 <script>
+import './style/button.css'
+import { reactive, computed } from 'vue'
+import { getPreFixName } from '../_util'
+
 export default {
-  data () {
+  name: 'my-button',
+
+  props: {
+    type: {
+      type: String,
+      default: 'primary',
+    },
+    plain: {
+      type: Boolean,
+      default: false
+    },
+    size: {
+      type: String,
+      validator: function (value) {
+        return ['small', 'medium', 'large'].indexOf(value) !== -1;
+      },
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  emits: ['click'],
+
+  setup(props, { emit }) {
+    props = reactive(props)
+    let prefix = getPreFixName('button')
     return {
-      name: 'kkk'
+      classes: computed(() => ([
+        `${prefix}`,
+        props.primary ? `${prefix}--primary` : null,
+        !props.primary ? `${prefix}--secondary` : null,
+        `${prefix}--${props.size || 'medium'}`
+      ])),
+      onClick() {
+        emit('click')
+      }
     }
   }
 }

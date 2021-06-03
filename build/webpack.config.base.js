@@ -72,7 +72,7 @@ module.exports = {
       "@": path.join(__dirname, "../src")
     },
     extensions: [
-      ".js", ".json",".vue"
+      ".js", ".json", ".vue", ".ts", ".tsx", ".scss", ".css"
     ]
   },
   plugins: [
