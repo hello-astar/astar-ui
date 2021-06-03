@@ -18,7 +18,7 @@
       }
   },
   "include": [
-      "src/**/*.ts", "types", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"
+      "src/**/*.ts", "types", "src/**/*.d.ts", "src/**/*.tsx", "src/components/**/*.vue"
   ],
   "exclude": [
       "node_modules",
